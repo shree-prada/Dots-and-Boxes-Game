@@ -31,7 +31,7 @@ class Dots_and_Boxes():
         # Create a new Tkinter window
         self.window = Tk()
         # Set the window title
-        self.window.title('Dots_and_Boxes')
+        self.window.title('Dots and Boxes Game')
         # Create a new Canvas widget within the window
         self.canvas = Canvas(
             self.window, width=size_of_board, height=size_of_board)

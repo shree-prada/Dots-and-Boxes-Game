@@ -57,16 +57,17 @@ def register():
     # When the button is clicked, the "register_user" function will be called.
     # The button is then packed into the registration screen.
     Button(register_screen, text="Register", width=10,
-           height=2, bg="MediumPurple1", command=register_user, font=("Calibri", 12)).pack(pady=20)
+           height=2, bg="MediumPurple1", command=register_user, font=("Calibri", 12), activebackground="thistle4").pack(pady=20)
 
 
 
 # Designing window for login
-def login():
+def login(toClose):
     global login_screen
+    toClose.destroy()
     # Creates a new window using Toplevel, which will be used for the login screen.
     # The new window will be displayed on top of the "main_screen" window.
-    login_screen = Toplevel(main_screen)
+    login_screen = Tk()
     # Sets the title of the login screen.
     login_screen.title("Login")
     login_screen.geometry("1920x1080")
@@ -99,13 +100,21 @@ def login():
     Label(login_screen, text="").pack()
     # Creates a button labeled "Login"
     Button(login_screen, text="Login", bg="MediumPurple1",width=10,
-           height=2, command=login_verify, font=("Calibri", 12)).pack(pady=20)
+           height=2, command=login_verify, activebackground="thistle4", font=("Calibri", 12)).pack(pady=20)
+    login_screen.mainloop()
+
 
 # This function registers a new user by saving their username and password to a file named "save_data.txt" and provides feedback to the user if the registration was successful or not.
 def register_user():
 
     username_info = username.get()
     password_info = password.get()
+
+    # Password validation
+    if len(password_info) < 8 or not any(char.isupper() for char in password_info) or not any(char.islower() for char in password_info) or not any(char.isdigit() for char in password_info) or not any(char in ['_', '@', '$'] for char in password_info):
+        Label(register_screen, text="Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one of the following symbols: _, @, or $", fg="red").pack()
+        return
+
 
     #These two lines get the username and password entered by the user in the registration screen and store them in two variables username_info and password_info.
     file = open("save_data.txt", "a")
@@ -120,7 +129,7 @@ def register_user():
           bg="SteelBlue1", width="100", height="2", font=("Calibri", 10)).pack()
     Label(register_screen, text="").pack()
     # This line adds a "OK" button to the registration screen which, when clicked, calls the delete_register_success() function to close the registration screen.
-    Button(register_screen, text="OK",
+    Button(register_screen, text="OK", activebackground="thistle4",
            command=delete_register_success).pack()
 
 
@@ -147,16 +156,17 @@ def login_verify():
 
     # These lines check the value of found. If it is True, it calls the login_success() function to indicate a successful login. Otherwise, it calls the password_not_recognised() function to inform the user that the entered login credentials are incorrect.
     if found:
-        login_sucess()
+        login_sucess(login_screen)
     else:
         password_not_recognised()
 
 # This function creates a new window to display a success message when the user successfully logs in. It also provides some buttons for the user to proceed to play the game, access instructions, and view information about the developers.
-def login_sucess():
+def login_sucess(toClose):
     # make login_success_screen a global variable so that it can be accessed from other functions
     global login_success_screen
+    toClose.destroy()
     # create a new window to display the success message
-    login_success_screen = Toplevel(login_screen)
+    login_success_screen = Tk()
     # set the window title
     login_success_screen.title("Success")
     # set the window size
@@ -168,19 +178,22 @@ def login_sucess():
     Label(login_success_screen, text="").pack()
     # create a button for the user to proceed to play the game
     Button(login_success_screen, text="Proceed to Play", bg="MediumPurple1",
-           height="2", width="30", command=delete_login_success).pack()
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=delete_login_success).pack(pady=20)
     # create an empty label to add spacing between the "Proceed to Play" and "Instructions" buttons
     Label(login_success_screen, text="").pack()
     # create a button for the user to access the game instructions
     Button(login_success_screen, text="Instructions", bg="MediumPurple1",
-           height="2", width="30", command=lambda: openInstructions()).pack()
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: openInstructions()).pack(pady=20)
     # create an empty label to add spacing between the "Instructions" and "About Us" buttons
     Label(login_success_screen, text="").pack()
     # create a button for the user to view information about the developers
     Button(login_success_screen, text="About Us", bg="MediumPurple1",
-           height="2", width="30", command=lambda: openAboutUs()).pack()
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: openAboutUs()).pack(pady=20)
     # create an empty label to add spacing at the bottom of the window
     Label(login_success_screen, text="").pack()
+    Button(login_success_screen, text="Feedback", bg="MediumPurple1",
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: openFeedback()).pack(pady=20)
+
 
 # This function is called when the user enters an incorrect password during the login process. It displays a new window with a message saying "Invalid Password" and an "OK" button that, when clicked, closes the window.
 def password_not_recognised():
@@ -194,7 +207,7 @@ def password_not_recognised():
     # creates a label with the text "Invalid Password" and adds it to the new window
     Label(password_not_recog_screen, text="Invalid Password").pack()
     # creates a button with the text "OK" and a command to call the function delete_password_not_recognised() when clicked, and adds it to the new window.
-    Button(password_not_recog_screen, text="OK",
+    Button(password_not_recog_screen, text="OK", activebackground="thistle4",
             command=delete_password_not_recognised).pack()
 
 # This function creates a pop-up window that displays a message "User Not Found" and an "OK" button to close the window when the user is not found
@@ -209,7 +222,7 @@ def user_not_found():
     # create a Label widget with the message "User Not Found" and add it to the window
     Label(user_not_found_screen, text="User Not Found").pack()
     # create an "OK" button widget and add it to the window, and set its command to a function that will close the window
-    Button(user_not_found_screen, text="OK",
+    Button(user_not_found_screen, text="OK", activebackground="thistle4",
            command=delete_user_not_found_screen).pack()
 
 # This function is used to delete the login success screen and start the game
@@ -245,12 +258,12 @@ def main_account_screen():
     Label(text="").pack()
     # Create a login button with a purple background and larger font size and set the command to the login function
     Button(text="Login", bg="MediumPurple3", height="3",
-            width="30", font="Calibri 20", command=login).pack(pady=60, anchor="center")
+           width="30", font="Calibri 20", command=lambda: login(main_screen), activebackground="thistle4").pack(pady=60, anchor="center")
     # Add some empty space between the buttons
     Label(text="").pack()
     # Create a register button with a purple background and larger font size and set the command to the register function
     Button(text="Register", bg="MediumPurple3", height="3",
-            width="30", font=("Calibri", 20), command=register).pack(pady=10, anchor="center")
+           width="30", font=("Calibri", 20), activebackground="thistle4", command=lambda: register()).pack(pady=10, anchor="center")
     
     # Start the main loop to display the window and wait for user interaction
     main_screen.mainloop()
@@ -275,3 +288,32 @@ def openInstructions():
     open_Instructions.title("Instructions")
     aboutlabel = Label(open_Instructions, text="Instructions: \n1.Each player will take turns drawing a line between two dots on the board.The line can be vertical or horizontal, \nbut it must connect two adjacent dots.\n2.If a player completes a box, the box gets coloured and they can take another turn.\n3.The game continues until all of the boxes have been completed.\n4.The player with the most completed boxes at the end of the game is the winner.", font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
     open_Instructions.mainloop()
+
+def openFeedback():
+    openFeedback = Tk()
+    openFeedback.title("Feedback")
+    # specify size of window.
+    openFeedback.geometry("500x500")
+    openFeedback.configure(bg="MediumPurple1")
+    # Create text widget and specify size.
+    T = Text(openFeedback, height=20, width=60)
+
+    # Create label
+    l = Label(openFeedback, text="Please provide feedback",bg="MediumPurple1")
+    l.config(font=("Courier", 14))
+
+    # Create an Exit button.
+    b2 = Button(openFeedback, text="Ok", height=2, width=3, activebackground="thistle4",
+                command=openFeedback.destroy)
+
+    l.pack(pady=10)
+    T.pack(pady=10)
+    b2.pack(pady=10)
+
+    # Insert The Fact.
+    # T.insert(root.END, Fact)
+    openFeedback.mainloop()
+
+
+
+# main_account_screen()
