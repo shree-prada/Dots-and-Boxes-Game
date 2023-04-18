@@ -1,7 +1,10 @@
 # import modules
-
 from tkinter import *
 from game import startgame
+from tkinter import ttk
+from PIL import Image, ImageTk
+
+
 
 # Defines a function called register
 def register():
@@ -109,7 +112,7 @@ def login(toClose):
     login_screen.mainloop()
 
 
-# This function registers a new user by saving their username and password to a file named "save_data.txt" and provides feedback to the user if the registration was successful or not.
+# This function registers a new user by saving their username and password to a file named "User_password_database.txt" and provides feedback to the user if the registration was successful or not.
 def register_user():
     username_info = username.get()
     password_info = password.get()
@@ -122,7 +125,7 @@ def register_user():
 
 
     #These two lines get the username and password entered by the user in the registration screen and store them in two variables username_info and password_info.
-    file = open("save_data.txt", "a")
+    file = open("User_password_database.txt", "a")
     file.write(username_info + ":" + password_info + "\n")
     file.close()
     # These lines clear the username and password entry fields after the user submits their registration information.
@@ -140,7 +143,7 @@ def register_user():
            command=delete_register_success).pack()
 
 
-# This function verifies the login credentials entered by the user by checking them against the data stored in the "save_data.txt" file. If the login credentials match with any of the records in the file, it calls the login_success() function. Otherwise, it calls the password_not_recognised() function to let the user know that the entered credentials are incorrect.
+# This function verifies the login credentials entered by the user by checking them against the data stored in the "User_password_database.txt" file. If the login credentials match with any of the records in the file, it calls the login_success() function. Otherwise, it calls the password_not_recognised() function to let the user know that the entered credentials are incorrect.
 def login_verify():
     #These two lines get the username and password entered by the user in the login screen and store them in two variables username1 and password1.
     username1 = username_verify.get()
@@ -149,8 +152,8 @@ def login_verify():
     username_login_entry.delete(0, END)
     password_login_entry.delete(0, END)
 
-    # These lines open the file named "save_data.txt" in read-only mode and initialize a boolean variable found to False to indicate if the user's login credentials match with any of the records in the file.
-    file = open("save_data.txt", "r")
+    # These lines open the file named "User_password_database.txt" in read-only mode and initialize a boolean variable found to False to indicate if the user's login credentials match with any of the records in the file.
+    file = open("User_password_database.txt", "r")
     found = False
     # These lines iterate through each line in the file, split it into username and password using the colon separator :, and compare them with the user's entered username1 and password1. If a match is found, the found variable is set to True and the loop is terminated using the break statement.
     for line in file:
@@ -245,30 +248,49 @@ def delete_user_not_found_screen():
     user_not_found_screen.destroy()
 
 
-# This function is responsible for creating the main account screen for the user to either login or register
 def main_account_screen():
-    # Declare main_screen as a global variable to be accessible by other functions
     global main_screen
-    # Create a new window with dimensions 1920x1080 and title "Account Login"
     main_screen = Tk()
     main_screen.geometry("1920x1080")
-    main_screen.title("Account Login")
-    # Create a label for the user to select their choice and pack it into the main screen
-    Label(text="Select Your Choice", bg="MediumPurple1", width="300",
-            height="2", font=("Calibri", 15)).pack()
-    # Add some empty space between the label and the buttons
+    main_screen.title("Dots and Boxes") 
     Label(text="").pack()
-    # Create a login button with a purple background and larger font size and set the command to the login function
-    Button(text="Login", bg="MediumPurple3", height="3",
-           width="30", font="Calibri 20", command=lambda: login(main_screen), activebackground="thistle4").pack(pady=60, anchor="center")
-    # Add some empty space between the buttons
+    image = Image.open("Game1.png")
+    # Resize the image using resize() method
+    resize_image = image.resize((175, 175))
+    img = ImageTk.PhotoImage(resize_image)
+    # create label and add resize image
+    label1 = Label(image=img)
+    label1.image = img
+    label1.pack(pady=10)
+    Button(text="Login", bg="MediumPurple3", height="2",
+           width="20", font="Calibri 20", command=lambda: login(main_screen), activebackground="thistle4").pack(pady=40, anchor="center")
     Label(text="").pack()
-    # Create a register button with a purple background and larger font size and set the command to the register function
-    Button(text="Register", bg="MediumPurple3", height="3",
-           width="30", font=("Calibri", 20), activebackground="thistle4", command=lambda: register()).pack(pady=10, anchor="center")
-    
-    # Start the main loop to display the window and wait for user interaction
+    Button(text="Register", bg="MediumPurple3", height="2",
+           width="20", font=("Calibri", 20), activebackground="thistle4", command=lambda: register()).pack(pady=10, anchor="center")
+    Label(text="").pack()
+    Button(text="Privacy Policy", bg="MediumPurple3", height="2",
+           width="20", font=("Calibri", 20), activebackground="thistle4", command=lambda: openPrivacyPolicy()).pack(pady=40, anchor="center")
+
     main_screen.mainloop()
+
+
+def openPrivacyPolicy():
+    # Declare a global variable for the new window
+    global privacy_Policy_screen
+
+    # Create a new tkinter window
+    privacy_Policy_screen = Tk()
+    # Set the title, background color, and size of the new window
+    privacy_Policy_screen.title("Privacy Policy")
+    privacy_Policy_screen.config(background="Light Blue")
+    privacy_Policy_screen.geometry("1920x1080")
+    # Add a label to the new window to display information about the project and the team members
+    Label(privacy_Policy_screen, text="Welcome to Dots and Boxes Game. We are committed to protecting your privacy and want you to feel confident that your personal information is safe with us.\n This Privacy Policy explains how we collect, use, and disclose information when play our Game.\n\nInformation We Collect: \nWe may collect information from you when you use our App, including: \n\n1. Personal information, such as your name and email address, if you choose to provide it to us.\n2. Technical information, such as your device’s operating system and version, IP address, and mobile network information.\n3. Usage information, such as the pages you visit within the App, the time and date of your visit, and the links you click on.\n\nHow We Use Your Information:\n We use your information to: \n1. Provide you with the services and features of our App.\nCommunicate with you about the App and respond to your inquiries and requests.\n2. Personalize your experience with our App.\n3.Improve our App and develop new features and services.\n",font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
+    Button(privacy_Policy_screen, text="Accept", height=3, width=10, activebackground="thistle4",
+           command=privacy_Policy_screen.destroy).pack(pady=10)
+    # Run the new tkinter window in a loop
+    privacy_Policy_screen.mainloop()
+
 
 # This function takes in a tkinter window to close and opens a new window for the user to choose the difficulty level
 def openLevel(toClose):
@@ -312,7 +334,7 @@ def openAboutUs():
     open_AboutUs_screen.config(background="Light Blue")
     open_AboutUs_screen.geometry("1920x1080")
     # Add a label to the new window to display information about the project and the team members
-    Label(open_AboutUs_screen, text="This is our final project for the course AML 1214 - Python Programming 01 Course. We have developed a Dots and Boxes game in python using tkinter and numpy.\n\nTeam members:\n 1.Himanshu\n 2.Namita\n 3.Bhavneet\n 4.Shree Prada\n 5.Dushyant\n\n\nWe hope you have a great time playing this game!Enjoy!", font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
+    Label(open_AboutUs_screen, text="Welcome to our Dots and Boxes game! This app is the result of our hard work as a team for the AML 1214 - Python Programming 01 Course final project.\nWe developed this game using Python, with the help of tkinter and numpy libraries.\n\nMeet the team who made this project possible: \n1. Himanshu\n2. Namita\n3. Bhavneet\n4. Shree Prada\n5. Dushyant\n\nWe hope you enjoy playing our game! Have fun!", font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
     # Run the new tkinter window in a loop
     open_AboutUs_screen.mainloop()
 
