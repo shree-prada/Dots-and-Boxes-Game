@@ -178,7 +178,7 @@ def login_sucess(toClose):
     Label(login_success_screen, text="").pack()
     # create a button for the user to proceed to play the game
     Button(login_success_screen, text="Proceed to Play", bg="MediumPurple1",
-           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=delete_login_success).pack(pady=20)
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda : openLevel(login_success_screen)).pack(pady=20)
     # create an empty label to add spacing between the "Proceed to Play" and "Instructions" buttons
     Label(login_success_screen, text="").pack()
     # create a button for the user to access the game instructions
@@ -225,11 +225,6 @@ def user_not_found():
     Button(user_not_found_screen, text="OK", activebackground="thistle4",
            command=delete_user_not_found_screen).pack()
 
-# This function is used to delete the login success screen and start the game
-def delete_login_success():
-    login_success_screen.destroy()
-    startgame()
-
 # This function is used to delete the register success screen
 def delete_register_success():
     register_screen.destroy()
@@ -267,6 +262,28 @@ def main_account_screen():
     
     # Start the main loop to display the window and wait for user interaction
     main_screen.mainloop()
+
+
+def openLevel(toClose):
+    global openLevel_screen
+    toClose.destroy()
+    openLevel_screen = Tk()
+    openLevel_screen.title("Choose Difficulty Level")
+    openLevel_screen.geometry("1920x1080")
+    Label(openLevel_screen, text="Choose Difficulty Level", bg="MediumPurple1",
+          width="300", height="2", font=("Calibri", 13)).pack()
+    Label(openLevel_screen, text="").pack()
+    Button(openLevel_screen, text="Easy", bg="MediumPurple1",
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: startgame(openLevel_screen,"easy")).pack(pady=20)
+    Label(openLevel_screen, text="").pack()
+    Button(openLevel_screen, text="Medium", bg="MediumPurple1",
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: startgame(openLevel_screen,"medium")).pack(pady=20)
+    Label(openLevel_screen, text="").pack()
+    Button(openLevel_screen, text="Hard", bg="MediumPurple1",
+           height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: startgame(openLevel_screen,"hard")).pack(pady=20)
+
+    openLevel_screen.mainloop()
+
 
 # This function opens the About Us screen
 def openAboutUs():

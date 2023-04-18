@@ -1,24 +1,13 @@
 from tkinter import *  # Importing the necessary modules
 import numpy as np
 
-# Defining the size of the board and the number of dots
-size_of_board = 600
-number_of_dots = 6
-# Defining the size and thickness of the symbols used to represent the players
-symbol_size = (size_of_board / 3 - size_of_board / 8) / 2
 symbol_thickness = 50
-# Defining colors used in the game
-dot_color = '#7BC043'
-player1_color = '#0492CF'
+dot_color = "black"
+player1_color = "blue2"
 player1_color_light = '#67B0CF'
-player2_color = '#EE4035'
+player2_color = "red2"
 player2_color_light = '#EE7E77'
-Green_color = '#7BC043'
-# Defining the width of the dots and edges
-dot_width = 0.25*size_of_board/number_of_dots
-edge_width = 0.1*size_of_board/number_of_dots
-# Calculating the distance between each dot on the board
-distance_between_dots = size_of_board / (number_of_dots)
+Green_color = 'saddle brown'
 
 # defines a class Dots_and_Boxes that has several functions to handle the game logic
 
@@ -27,20 +16,42 @@ class Dots_and_Boxes():
     # ------------------------------------------------------------------
     # Initialization functions
     # ------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self,level):
+        self.level = level
         # Create a new Tkinter window
         self.window = Tk()
         # Set the window title
         self.window.title('Dots and Boxes Game')
+        self.window.configure(background="gray63")
+
+        # Define game settings based on level
+        if level == "easy":
+            self.size_of_board = 300
+            self.number_of_dots = 3
+        elif level == "medium":
+            self.size_of_board = 500
+            self.number_of_dots = 5
+        elif level == "hard":
+            self.size_of_board = 700
+            self.number_of_dots = 7
+
+        # Define game symbols and colors
+        self.symbol_size = (self.size_of_board / 3 -
+                            self.size_of_board / 8) / 2
+        self.dot_width = 0.25*self.size_of_board/self.number_of_dots
+        self.edge_width = 0.1*self.size_of_board/self.number_of_dots
+        self.distance_between_dots = self.size_of_board / (self.number_of_dots)
+
         # Create a new Canvas widget within the window
         self.canvas = Canvas(
-            self.window, width=size_of_board, height=size_of_board)
+            self.window, width=self.size_of_board, height=self.size_of_board)
         # Pack the Canvas widget
         self.canvas.pack()
         # Bind the left mouse button click event to the 'click' function of this class
         self.window.bind('<Button-1>', self.click)
         # Set player1_starts variable to True
         self.player1_starts = True
+
         # Call the refresh_board function to initialize the game board
         self.refresh_board()
         # Call the play_again function to ask if players want to play again
@@ -51,9 +62,11 @@ class Dots_and_Boxes():
         # Clear the board and reset the board status, row status, and column status arrays
         self.refresh_board()
         self.board_status = np.zeros(
-            shape=(number_of_dots - 1, number_of_dots - 1))
-        self.row_status = np.zeros(shape=(number_of_dots, number_of_dots - 1))
-        self.col_status = np.zeros(shape=(number_of_dots - 1, number_of_dots))
+            shape=(self.number_of_dots - 1, self.number_of_dots - 1))
+        self.row_status = np.zeros(
+            shape=(self.number_of_dots, self.number_of_dots - 1))
+        self.col_status = np.zeros(
+            shape=(self.number_of_dots - 1, self.number_of_dots))
 
         # Switch the starting player and reset the turn-related variables
         self.player1_starts = not self.player1_starts
@@ -98,7 +111,8 @@ class Dots_and_Boxes():
 
         # Convert the grid position to a logical position by dividing by the distance between dots
         # and rounding down to the nearest integer
-        position = (grid_position - distance_between_dots /4) // (distance_between_dots/2)
+        position = (grid_position - self.distance_between_dots /
+                    4) // (self.distance_between_dots/2)
 
         # Initialize type to False and logical_position to an empty list
         type = False
@@ -164,7 +178,7 @@ class Dots_and_Boxes():
 
         # Update the board status for the current move.
         # Check that the move is within the bounds of the board.
-        if c < (number_of_dots-1) and r < (number_of_dots-1):
+        if c < (self.number_of_dots-1) and r < (self.number_of_dots-1):
             # Update the status of the box that contains the move.
             self.board_status[c][r] += val
 
@@ -198,19 +212,23 @@ class Dots_and_Boxes():
         # Calculate the start and end points of the edge based on the type of edge and the logical position.
         if type == 'row':
             # The start x-coordinate is the center of the left dot in the row.
-            start_x = distance_between_dots/2 + logical_position[0]*distance_between_dots
+            start_x = self.distance_between_dots/2 + \
+                logical_position[0]*self.distance_between_dots
             # The end x-coordinate is the center of the right dot in the row.
-            end_x = start_x+distance_between_dots
+            end_x = start_x+self.distance_between_dots
             # The y-coordinate is the center of the dots in the row.
-            start_y = distance_between_dots/2 + logical_position[1]*distance_between_dots
+            start_y = self.distance_between_dots/2 + \
+                logical_position[1]*self.distance_between_dots
             end_y = start_y
         elif type == 'col':
             # The start y-coordinate is the center of the top dot in the column.
-            start_y = distance_between_dots / 2 + logical_position[1] * distance_between_dots
+            start_y = self.distance_between_dots / 2 + \
+                logical_position[1] * self.distance_between_dots
             # The end y-coordinate is the center of the bottom dot in the column.
-            end_y = start_y + distance_between_dots
+            end_y = start_y + self.distance_between_dots
             # The x-coordinate is the center of the dots in the column.
-            start_x = distance_between_dots / 2 + logical_position[0] * distance_between_dots
+            start_x = self.distance_between_dots / 2 + \
+                logical_position[0] * self.distance_between_dots
             end_x = start_x
 
         # Set the color of the edge based on which player's turn it is.
@@ -220,7 +238,8 @@ class Dots_and_Boxes():
             color = player2_color
 
         # Create the line segment (edge) using the start and end points and the chosen color.
-        self.canvas.create_line(start_x, start_y, end_x, end_y,fill=color, width=edge_width)
+        self.canvas.create_line(start_x, start_y, end_x,
+                                end_y, fill=color, width=self.edge_width)
 
 
     def display_gameover(self):
@@ -237,47 +256,46 @@ class Dots_and_Boxes():
             color = player2_color
         else:
             text = 'Its a tie'
-            color = 'gray'
+            color = 'maroon'
 
         # Clear the canvas and display the winner and scores
         self.canvas.delete("all")
         self.canvas.create_text(
-            size_of_board / 2, size_of_board / 3, font="cmr 60 bold", fill=color, text=text)
+            self.size_of_board / 2, self.size_of_board / 3, font=("Arial Bold", 18),fill=color, text=text)
 
         score_text = 'Scores \n'
-        self.canvas.create_text(size_of_board / 2, 5 * size_of_board / 8,
-                            font="cmr 40 bold", fill=Green_color, text=score_text)
+        self.canvas.create_text(self.size_of_board / 2, 5 * self.size_of_board / 8,
+                                font=("Arial Bold", 13), fill=Green_color, text=score_text)
 
         score_text = 'Player 1 : ' + str(player1_score) + '\n'
         score_text += 'Player 2 : ' + str(player2_score) + '\n'
-        self.canvas.create_text(size_of_board / 2, 3 * size_of_board / 4, font="cmr 30 bold", fill=Green_color,text=score_text)
+        self.canvas.create_text(self.size_of_board / 2, 3 * self.size_of_board / 4,
+                                font=("Arial Bold", 13), fill=Green_color, text=score_text)
 
         # Set the board to be reset
         self.reset_board = True
 
         score_text = 'Click to play again \n'
-        self.canvas.create_text(size_of_board / 2, 15 * size_of_board / 16, font="cmr 20 bold", fill="gray",
-                            text=score_text)
+        self.canvas.create_text(self.size_of_board / 2, 15 * self.size_of_board /
+                                16, font=("Arial Bold", 13), fill="black", text=score_text)
     # This function refreshes the board, creating the dots and gridlines
     def refresh_board(self):
         # Create vertical grid lines
-        for i in range(number_of_dots):
-            x = i*distance_between_dots+distance_between_dots/2
-            self.canvas.create_line(x, distance_between_dots/2, x,
-                                    size_of_board-distance_between_dots/2,
+        for i in range(self.number_of_dots):
+            x = i*self.distance_between_dots+self.distance_between_dots/2
+            self.canvas.create_line(x, self.distance_between_dots/2, x,
+                                    self.size_of_board-self.distance_between_dots/2,
                                     fill='gray', dash = (2, 2))
             # Create horizontal grid lines
-            self.canvas.create_line(distance_between_dots/2, x,
-                                    size_of_board-distance_between_dots/2, x,
+            self.canvas.create_line(self.distance_between_dots/2, x,
+                                    self.size_of_board-self.distance_between_dots/2, x,
                                     fill='gray', dash=(2, 2))
         # Create the dots
-        for i in range(number_of_dots):
-            for j in range(number_of_dots):
-                start_x = i*distance_between_dots+distance_between_dots/2
-                end_x = j*distance_between_dots+distance_between_dots/2
-                self.canvas.create_oval(start_x-dot_width/2, end_x-dot_width/2, start_x+dot_width/2,
-                                        end_x+dot_width/2, fill=dot_color,
-                                        outline=dot_color)
+        for i in range(self.number_of_dots):
+            for j in range(self.number_of_dots):
+                start_x = i*self.distance_between_dots+self.distance_between_dots/2
+                end_x = j*self.distance_between_dots+self.distance_between_dots/2
+                self.canvas.create_oval(start_x-self.dot_width/2, end_x-self.dot_width/2, start_x+self.dot_width/2,end_x+self.dot_width/2, fill=dot_color,outline=dot_color)
     # This function updates the displayed text indicating whose turn it is
     def display_turn_text(self):
         # Determine whose turn it is
@@ -292,8 +310,8 @@ class Dots_and_Boxes():
         # Remove the old turn text from the canvas
         self.canvas.delete(self.turntext_handle)
         # Add the new turn text to the canvas
-        self.turntext_handle = self.canvas.create_text(size_of_board - 5*len(text),
-                                                       size_of_board-distance_between_dots/8,
+        self.turntext_handle = self.canvas.create_text(self.size_of_board - 5*len(text),
+                                                       self.size_of_board-self.distance_between_dots/8,
                                                        font="cmr 15 bold", text=text, fill=color)
     '''
     The above function first sets the initial text to "Next turn: ", and then adds "Player1" or "Player2" to the end of the string depending on whose turn it is. It also sets the color of the text to the appropriate player's color.
@@ -304,10 +322,12 @@ class Dots_and_Boxes():
     # This function takes a box represented by its top-left coordinate and a color as input, and shades the box with that color on the canvas
     def shade_box(self, box, color):
         # Calculate the coordinates of the top-left and bottom-right corners of the box
-        start_x = distance_between_dots / 2 + box[1] * distance_between_dots + edge_width/2
-        start_y = distance_between_dots / 2 + box[0] * distance_between_dots + edge_width/2
-        end_x = start_x + distance_between_dots - edge_width
-        end_y = start_y + distance_between_dots - edge_width
+        start_x = self.distance_between_dots / 2 + \
+            box[1] * self.distance_between_dots + self.edge_width/2
+        start_y = self.distance_between_dots / 2 + \
+            box[0] * self.distance_between_dots + self.edge_width/2
+        end_x = start_x + self.distance_between_dots - self.edge_width
+        end_y = start_y + self.distance_between_dots - self.edge_width
         # Draw a rectangle on the canvas with the calculated coordinates and the given color
         self.canvas.create_rectangle(start_x, start_y, end_x, end_y, fill=color, outline='')
 
@@ -325,8 +345,8 @@ class Dots_and_Boxes():
             color = player2_color
         # Delete the previous turn text and create a new text with the updated information
         self.canvas.delete(self.turntext_handle)
-        self.turntext_handle = self.canvas.create_text(size_of_board - 5*len(text),
-                                                       size_of_board-distance_between_dots/8,
+        self.turntext_handle = self.canvas.create_text(self.size_of_board - 5*len(text),
+                                                       self.size_of_board-self.distance_between_dots/8,
                                                        font="cmr 15 bold",text=text, fill=color)
         '''
         The above method checks whose turn it is by accessing the player1_turn attribute of the instance of the class. Depending on whose turn it is, the method appends the appropriate player number to the text and sets the text color accordingly. The method then deletes the previous turn text (if any) and creates a new text with the updated information at the bottom of the canvas.
@@ -366,9 +386,10 @@ class Dots_and_Boxes():
             self.reset_board = False
 
 # This code defines a function called startgame that creates an instance of the Dots_and_Boxes class and starts the main event loop
-def startgame():
+def startgame(toClose,level):
+    toClose.destroy()
     # create an instance of the Dots_and_Boxes class
-    game_instance = Dots_and_Boxes()
+    game_instance = Dots_and_Boxes(level)
     # start the main event loop
     game_instance.mainloop()
 
