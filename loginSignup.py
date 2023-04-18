@@ -20,6 +20,8 @@ def register():
     global password
     global username_entry
     global password_entry
+    global error_label
+
     # Creates two StringVar objects to store the values entered by the user for username and password.
     username = StringVar()
     password = StringVar()
@@ -31,6 +33,9 @@ def register():
         bg="MediumPurple1", width="300", height="2", font=("Calibri", 13)).pack()
     # Creates an empty label, which is packed into the registration screen to provide some space between the two labels.
     Label(register_screen, text="").pack()
+    error_label = Label(register_screen, text="", fg="red")
+    error_label.pack()
+
     # Creates a label that will display the text "Username" on the registration screen.
     # The label is then packed into the registration screen.
     username_lable = Label(register_screen, text="Username", font=("Calibri", 16),pady=20)
@@ -106,13 +111,13 @@ def login(toClose):
 
 # This function registers a new user by saving their username and password to a file named "save_data.txt" and provides feedback to the user if the registration was successful or not.
 def register_user():
-
     username_info = username.get()
     password_info = password.get()
 
-    # Password validation
-    if len(password_info) < 8 or not any(char.isupper() for char in password_info) or not any(char.islower() for char in password_info) or not any(char.isdigit() for char in password_info) or not any(char in ['_', '@', '$'] for char in password_info):
-        Label(register_screen, text="Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one of the following symbols: _, @, or $", fg="red").pack()
+    # check if password meets the requirements (at least 8 characters, contains both letters and numbers)
+    if len(password_info) < 8 or not any(char.isdigit() for char in password_info) or not any(char.isalpha()for char in password_info):
+        error_label.config(
+            text="Password should be at least 8 characters long and contain both letters and numbers")
         return
 
 
@@ -123,10 +128,12 @@ def register_user():
     # These lines clear the username and password entry fields after the user submits their registration information.
     username_entry.delete(0, END)
     password_entry.delete(0, END)
+    error_label.config(text="")
+
     Label(register_screen, text="").pack()
     #These lines add a label saying "Registration Success!" to the registration screen to let the user know that their registration was successful.
     Label(register_screen, text="Registration Success!",
-          bg="SteelBlue1", width="100", height="2", font=("Calibri", 10)).pack()
+          bg="SteelBlue1", width="50", height="2", font=("Calibri", 10)).pack()
     Label(register_screen, text="").pack()
     # This line adds a "OK" button to the registration screen which, when clicked, calls the delete_register_success() function to close the registration screen.
     Button(register_screen, text="OK", activebackground="thistle4",
