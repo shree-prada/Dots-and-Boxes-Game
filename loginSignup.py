@@ -270,74 +270,76 @@ def main_account_screen():
     # Start the main loop to display the window and wait for user interaction
     main_screen.mainloop()
 
-
+# This function takes in a tkinter window to close and opens a new window for the user to choose the difficulty level
 def openLevel(toClose):
+    # Declare a global variable for the new window
     global openLevel_screen
+    # Close the window passed as a parameter
     toClose.destroy()
+    # Create a new tkinter window
     openLevel_screen = Tk()
+    # Set the title and size of the new window
     openLevel_screen.title("Choose Difficulty Level")
     openLevel_screen.geometry("1920x1080")
+    # Add a label to the new window to prompt the user to choose a difficulty level
     Label(openLevel_screen, text="Choose Difficulty Level", bg="MediumPurple1",
           width="300", height="2", font=("Calibri", 13)).pack()
+    # Add some blank space for formatting purposes
     Label(openLevel_screen, text="").pack()
+    # Add a button for the "Easy" difficulty level
     Button(openLevel_screen, text="Easy", bg="MediumPurple1",
            height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: startgame(openLevel_screen,"easy")).pack(pady=20)
     Label(openLevel_screen, text="").pack()
+    # Add a button for the "Medium" difficulty level
     Button(openLevel_screen, text="Medium", bg="MediumPurple1",
            height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: startgame(openLevel_screen,"medium")).pack(pady=20)
     Label(openLevel_screen, text="").pack()
+    # Add a button for the "Hard" difficulty level
     Button(openLevel_screen, text="Hard", bg="MediumPurple1",
            height="3", width="30", font=("Calibri", 16), activebackground="thistle4", command=lambda: startgame(openLevel_screen,"hard")).pack(pady=20)
-
+    # Run the new tkinter window in a loop
     openLevel_screen.mainloop()
 
 
-# This function opens the About Us screen
+# This function opens a new window to display information about the team and the project
 def openAboutUs():
+    # Declare a global variable for the new window
     global open_AboutUs_screen
+    # Create a new tkinter window
     open_AboutUs_screen = Tk()
+    # Set the title, background color, and size of the new window
     open_AboutUs_screen.title("AboutUs")
     open_AboutUs_screen.config(background="Light Blue")
     open_AboutUs_screen.geometry("1920x1080")
+    # Add a label to the new window to display information about the project and the team members
     Label(open_AboutUs_screen, text="This is our final project for the course AML 1214 - Python Programming 01 Course. We have developed a Dots and Boxes game in python using tkinter and numpy.\n\nTeam members:\n 1.Himanshu\n 2.Namita\n 3.Bhavneet\n 4.Shree Prada\n 5.Dushyant\n\n\nWe hope you have a great time playing this game!Enjoy!", font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
+    # Run the new tkinter window in a loop
     open_AboutUs_screen.mainloop()
 
-# This function opens the Instructions screen
+# This function opens a new window to display game instructions
 def openInstructions():
+    # Declare a global variable for the new window
     global open_Instructions
+    # Create a new tkinter window
     open_Instructions = Tk()
+    # Set the title, background color, and size of the new window
     open_Instructions.title("Instructions")
     open_Instructions.geometry("1920x1080")
     open_Instructions.config(background="Light Blue")
     open_Instructions.title("Instructions")
-    aboutlabel = Label(open_Instructions, text="Instructions: \n1.Each player will take turns drawing a line between two dots on the board.The line can be vertical or horizontal, \nbut it must connect two adjacent dots.\n2.If a player completes a box, the box gets coloured and they can take another turn.\n3.The game continues until all of the boxes have been completed.\n4.The player with the most completed boxes at the end of the game is the winner.", font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
+    # Add a label to the new window to display the game instructions
+    Label(open_Instructions, text="Instructions: \n1.Each player will take turns drawing a line between two dots on the board.The line can be vertical or horizontal, \nbut it must connect two adjacent dots.\n2.If a player completes a box, the box gets coloured and they can take another turn.\n3.The game continues until all of the boxes have been completed.\n4.The player with the most completed boxes at the end of the game is the winner.", font=("Helvetica", 15), fg="black", bg="Light Blue", padx=50, pady=250, anchor=W, justify=LEFT).pack()
+    # Run the new tkinter window in a loop
     open_Instructions.mainloop()
 
 def openFeedback():
     openFeedback = Tk()
     openFeedback.title("Feedback")
-    # specify size of window.
     openFeedback.geometry("500x500")
     openFeedback.configure(bg="MediumPurple1")
-    # Create text widget and specify size.
-    T = Text(openFeedback, height=20, width=60)
-
-    # Create label
-    l = Label(openFeedback, text="Please provide feedback",bg="MediumPurple1")
-    l.config(font=("Courier", 14))
-
-    # Create an Exit button.
-    b2 = Button(openFeedback, text="Ok", height=2, width=3, activebackground="thistle4",
-                command=openFeedback.destroy)
-
-    l.pack(pady=10)
-    T.pack(pady=10)
-    b2.pack(pady=10)
-
-    # Insert The Fact.
-    # T.insert(root.END, Fact)
+    Label(openFeedback, text="Please provide feedback",
+          bg="MediumPurple1", font=("Courier", 14)).pack(pady=10)
+    Text(openFeedback, height=20, width=60).pack(pady=10)
+    Button(openFeedback, text="Ok", height=2, width=3, activebackground="thistle4",
+                command=openFeedback.destroy).pack(pady=10)
     openFeedback.mainloop()
-
-
-
-# main_account_screen()
