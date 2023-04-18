@@ -22,7 +22,6 @@ class Dots_and_Boxes():
         self.window = Tk()
         # Set the window title
         self.window.title('Dots and Boxes Game')
-        self.window.configure(background="gray63")
 
         # Define game settings based on level
         if level == "easy":
