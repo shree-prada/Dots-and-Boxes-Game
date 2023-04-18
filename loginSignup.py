@@ -115,9 +115,9 @@ def register_user():
     password_info = password.get()
 
     # check if password meets the requirements (at least 8 characters, contains both letters and numbers)
-    if len(password_info) < 8 or not any(char.isdigit() for char in password_info) or not any(char.isalpha()for char in password_info):
+    if len(password_info) < 8 or not any(char.isupper() for char in password_info) or not any(char.islower() for char in password_info) or not any(char.isdigit() for char in password_info) or not any(char in ['_', '@', '$'] for char in password_info):
         error_label.config(
-            text="Password should be at least 8 characters long and contain both letters and numbers")
+            text="Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one of the following special characters: _ @ $", font=("Arial Bold", 12))
         return
 
 
