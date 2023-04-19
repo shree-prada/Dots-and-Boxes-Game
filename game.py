@@ -361,7 +361,7 @@ class Dots_and_Boxes():
             logical_positon, valid_input = self.convert_grid_to_logical_position(grid_position)
             # Check if the input is valid and the logical position is not already occupied
             if valid_input and not self.is_grid_occupied(logical_positon, valid_input):
-                # Update the board with the move
+                # Update the board with the move of current player
                 self.update_board(valid_input, logical_positon)
                 # Make the edge and check if a box has been marked
                 self.make_edge(valid_input, logical_positon)
