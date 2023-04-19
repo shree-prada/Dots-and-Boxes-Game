@@ -7,7 +7,7 @@ player1_color = "blue2"
 player1_color_light = '#67B0CF'
 player2_color = "red2"
 player2_color_light = '#EE7E77'
-Green_color = 'saddle brown'
+score_color = "saddle brown"
 
 # defines a class Dots_and_Boxes that has several functions to handle the game logic
 
@@ -264,12 +264,12 @@ class Dots_and_Boxes():
 
         score_text = 'Scores \n'
         self.canvas.create_text(self.size_of_board / 2, 5 * self.size_of_board / 8,
-                                font=("Arial Bold", 13), fill=Green_color, text=score_text)
+                                font=("Arial Bold", 13), fill=score_color, text=score_text)
 
         score_text = 'Player 1 : ' + str(player1_score) + '\n'
         score_text += 'Player 2 : ' + str(player2_score) + '\n'
         self.canvas.create_text(self.size_of_board / 2, 3 * self.size_of_board / 4,
-                                font=("Arial Bold", 13), fill=Green_color, text=score_text)
+                                font=("Arial Bold", 13), fill=score_color, text=score_text)
 
         # Set the board to be reset
         self.reset_board = True
